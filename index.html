@@ -1,0 +1,1481 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>সরকারি আজিজুল হক কলেজ — মাছ ধরুন</title>
+  <style>
+    /* Mobile-first design with enhanced features */
+    :root{
+      --glass: rgba(255,255,255,0.08);
+      --accent: rgba(3, 102, 214, 0.95);
+      --soft: rgba(255,255,255,0.9);
+      --card: rgba(255,255,255,0.06);
+      --gold: #ffd54a;
+      --green: #4caf50;
+      --orange: #ff9800;
+      --red: #f44336;
+      --bg-img: url('https://i.imgur.com/fCFKqjX.jpeg');
+    }
+    
+    /* Base styles */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Noto Sans Bengali", system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; 
+      color:var(--soft);
+    }
+    
+    body{
+      background-image: linear-gradient(to bottom, rgba(0,20,40,0.65), rgba(0,10,20,0.65)), var(--bg-img);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:14px;
+      min-height:100vh;
+    }
+
+    /* Top header */
+    .elephant{
+      width:100%;
+      max-width:720px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    
+    .tiger{
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      flex:0 0 56px;
+      overflow:hidden;
+      box-shadow:0 6px 18px rgba(0,0,0,0.4);
+      border:2px solid rgba(255,255,255,0.12);
+    }
+    
+    .tiger img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    
+    .lion{
+      flex:1;
+    }
+    
+    .lion h1{
+      margin:0;
+      font-size:16px;
+      line-height:1.05;
+      background: linear-gradient(45deg, #fff, #e3f2fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .lion p{
+      margin:2px 0 0 0;
+      font-size:12px;
+      opacity:0.95;
+    }
+
+    /* Level selection modal */
+    .bear{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .wolf{
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    
+    .fox{
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .rabbit{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .deer{
+      background: linear-gradient(135deg, var(--accent), rgba(3, 102, 214, 0.7));
+      border: none;
+      padding: 16px 12px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .deer:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(3, 102, 214, 0.4);
+    }
+    
+    .deer.selected{
+      background: linear-gradient(135deg, var(--gold), #ffb300);
+      box-shadow: 0 0 20px rgba(255, 213, 74, 0.5);
+    }
+    
+    .deer::before{
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .deer:hover::before{
+      left: 100%;
+    }
+
+    /* Game card */
+    .horse{
+      width:100%;
+      max-width:720px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border-radius:16px;
+      padding:10px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.45);
+      border:1px solid rgba(255,255,255,0.05);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* HUD */
+    .cat{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:8px 6px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .dog{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap: wrap;
+    }
+    
+    .mouse{
+      background:var(--card);
+      padding:6px 10px;
+      border-radius:10px;
+      font-size:13px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .bird{
+      font-weight:700;
+      color:var(--gold);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .bird:hover{
+      color: #fff;
+      text-shadow: 0 0 10px var(--gold);
+    }
+    
+    .snake{
+      display:flex;
+      gap:8px;
+      flex-wrap: wrap;
+    }
+    
+    .fish{
+      background:var(--accent);
+      border:none;
+      padding:8px 12px;
+      border-radius:10px;
+      color:white;
+      font-weight:600;
+      font-size:13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .fish:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(3, 102, 214, 0.4);
+    }
+    
+    .fish:disabled{
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .fish.secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.12);
+    }
+    
+    .fish.secondary:hover{
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .fish.pause{
+      background: var(--orange);
+    }
+    
+    .fish.pause:hover{
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+    }
+
+    /* Play area */
+    .pond{
+      height:60vh;
+      min-height:320px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(0,80,150,0.18), rgba(0,35,85,0.35));
+      position:relative;
+      overflow:hidden;
+      margin:8px;
+      border:1px solid rgba(255,255,255,0.04);
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Fish base styles - Enhanced for clickability */
+    .swimming{
+      position:absolute;
+      touch-action:none;
+      user-select:none;
+      cursor:pointer;
+      transform-origin:center center;
+      transition:transform 0.08s linear;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      border-radius: 8px;
+      overflow: visible;
+      z-index: 100;
+      pointer-events: auto;
+    }
+    
+    .swimming:hover{
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4)) brightness(1.1);
+      transform: scale(1.05);
+      z-index: 200;
+    }
+
+    /* Fish species styles with adjusted sizes */
+    .rohu{width:75px;height:45px;}
+    .tilapia{width:70px;height:42px;}
+    .catfish{width:85px;height:60px;}
+    .koi{width:64px;height:39px;}
+    .ilish{width:96px;height:57px;filter:drop-shadow(0 6px 12px rgba(255,215,90,0.12))}
+
+    /* Splash animation */
+    .splash{
+      position:absolute;
+      border-radius:999px;
+      pointer-events:none;
+      opacity:0.95;
+      transform:translate(-50%,-50%);
+      animation:splashAnim 700ms forwards;
+      z-index: 300;
+    }
+    
+    @keyframes splashAnim{
+      0%{width:12px;height:12px;opacity:0.9}
+      50%{width:80px;height:40px;opacity:0.6}
+      100%{width:120px;height:60px;opacity:0}
+    }
+
+    /* Score breakdown modal */
+    .scoreModal{
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .scoreContent{
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
+    .scoreTitle{
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    
+    .fishScore{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      margin: 4px 0;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .fishName{
+      font-weight: 600;
+    }
+    
+    .fishPoints{
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer{
+      width: 100%;
+      max-width: 720px;
+      margin-top: 20px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+    
+    .footer-content{
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    
+    .footer-credits{
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .footer-credits a{
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-credits a:hover{
+      color: #fff;
+      text-shadow: 0 0 10px var(--gold);
+    }
+
+    /* Floating plants and UI touches */
+    .plant{
+      position:absolute;
+      left:6px;
+      bottom:6px;
+      opacity:0.55;
+      font-size:12px;
+      pointer-events: none;
+    }
+
+    /* Pause overlay */
+    .pause-overlay{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+    
+    .pause-text{
+      font-size: 24px;
+      font-weight: 600;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* Level indicator */
+    .level-indicator{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, var(--accent), rgba(3, 102, 214, 0.7));
+      padding: 8px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      pointer-events: none;
+    }
+
+    /* Speed indicator */
+    .speed-indicator{
+      position: absolute;
+      top: 40px;
+      right: 10px;
+      background: rgba(255,255,255,0.1);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+      pointer-events: none;
+    }
+
+    /* Animation for caught fish */
+    @keyframes fishCaught{
+      0%{transform: scale(1) rotate(0deg)}
+      50%{transform: scale(1.2) rotate(10deg)}
+      100%{transform: scale(0.2) rotate(-30deg); opacity: 0}
+    }
+    
+    .caught{
+      animation: fishCaught 300ms ease-out forwards;
+      pointer-events: none;
+    }
+
+    /* Landscape / larger screens tweaks */
+    @media(min-width:720px){
+      body{padding:24px}
+      .elephant{margin-bottom:18px}
+      .lion h1{font-size:20px}
+      .pond{height:64vh}
+      .cat{flex-wrap: nowrap}
+      .dog{flex-wrap: nowrap}
+      .snake{flex-wrap: nowrap}
+    }
+
+    /* Responsive adjustments */
+    @media(max-width: 480px){
+      .wolf{
+        padding: 16px;
+      }
+      
+      .rabbit{
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .deer{
+        padding: 12px 8px;
+        font-size: 12px;
+      }
+      
+      .cat{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      
+      .dog, .snake{
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="elephant">
+    <div class="tiger">
+      <img src="https://i.imgur.com/u4bjy7I.jpeg" alt="College logo">
+    </div>
+    <div class="lion">
+      <h1>সরকারি আজিজুল হক কলেজ — ক্যাম্পাসে মাছ ধরুন</h1>
+      <p>বৃষ্টি ও বন্যার পরে ক্যাম্পাস বন্যা; ধরো যতগুলো মাছ পারো!</p>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div class="hint">মোবাইল ভিউ অনুকূল</div>
+    </div>
+  </div>
+
+  <!-- Level Selection Modal -->
+  <div class="bear" id="levelModal">
+    <div class="wolf">
+      <div class="fox">লেভেল নির্বাচন করুন</div>
+      <div class="rabbit" id="levelButtons">
+        <!-- Level buttons will be generated by JavaScript -->
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button class="fish secondary" id="cancelLevel">বাতিল</button>
+        <button class="fish" id="confirmLevel">শুরু করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Speed Selection Modal -->
+  <div class="bear" id="speedModal">
+    <div class="wolf">
+      <div class="fox">গতি নির্বাচন করুন</div>
+      <div class="rabbit" id="speedButtons">
+        <!-- Speed buttons will be generated by JavaScript -->
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: center;">
+        <button class="fish secondary" id="cancelSpeed">বাতিল</button>
+        <button class="fish" id="confirmSpeed">নিশ্চিত করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Breakdown Modal -->
+  <div class="scoreModal" id="scoreModal">
+    <div class="scoreContent">
+      <div class="scoreTitle">🐟 মাছের পয়েন্ট বিবরণ</div>
+      <div id="scoreBreakdown">
+        <!-- Score breakdown will be populated by JavaScript -->
+      </div>
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="fish" id="closeScoreModal">বন্ধ করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Card -->
+  <div class="horse" id="gameCard">
+    <!-- HUD Section -->
+    <div class="cat">
+      <div class="dog">
+        <div class="mouse">⏱ <span id="timer">01:00</span></div>
+        <div class="mouse">⚑ স্তর: <strong id="level">১</strong></div>
+        <div class="mouse">💰 স্কোর: <span class="bird" id="score" title="স্কোর বিবরণ দেখতে ক্লিক করুন">0</span></div>
+      </div>
+      <div class="snake">
+        <button class="fish" id="levelSelectBtn">লেভেল নির্বাচন</button>
+        <button class="fish" id="speedSelectBtn">গতি নির্বাচন</button>
+        <button class="fish" id="startBtn">খেলা শুরু করো</button>
+        <button class="fish pause" id="pauseBtn" style="display: none;">বিরতি</button>
+        <button class="fish secondary" id="resetBtn">রিসেট</button>
+      </div>
+    </div>
+
+    <!-- Game Pond -->
+    <div class="pond" id="pond" aria-label="পুকুর">
+      <!-- Level indicator -->
+      <div class="level-indicator" id="levelIndicator">লেভেল ১</div>
+      
+      <!-- Speed indicator -->
+      <div class="speed-indicator" id="speedIndicator">গতি: স্বাভাবিক</div>
+      
+      <!-- Pause overlay -->
+      <div class="pause-overlay" id="pauseOverlay">
+        <div class="pause-text">⏸ বিরতি</div>
+      </div>
+      
+      <!-- Fishes will be injected by JavaScript -->
+      <div class="plant">🌿 মাছের উপর ক্লিক/ট্যাপ করো</div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <div class="footer">
+    <div class="footer-content">
+      Tip: বড় মাছ বেশি পয়েন্ট দেয় — ইলিশ পাওয়া গেলে বোনাস! স্কোরে ক্লিক করে বিবরণ দেখুন।
+    </div>
+    <div class="footer-credits">
+      Design By <a href="https://www.facebook.com/share/1G1KQHWXH9/" target="_blank">MD SHARIFUL ISLAM</a>. 
+      © ২০২৫ সরকারি আজিজুল হক কলেজ, বগুড়া - পদার্থবিজ্ঞান বিভাগ।
+    </div>
+  </div>
+
+  <script>
+    /* 
+     * Enhanced Fishing Game with Corrected Fish Names and Increased Level 1 Speed
+     * Features: Proper fish clickability, score breakdown modal, level-based speed control
+     * Author: MD SHARIFUL ISLAM
+     * College: Government Azizul Haque College, Bogura - Physics Department
+     */
+
+    // Game configuration with level-based difficulty and speed control
+    const CONFIG = {
+      levels: [
+        {
+          id: 1, 
+          name: 'সহজ', 
+          duration: 90, 
+          spawnInterval: 600, // Faster spawn for more action
+          maxFish: 6, 
+          speedMultiplier: 2.1,  // Much faster speed for Level 1
+          speedLabel: 'দ্রুত'
+        },
+        {
+          id: 2, 
+          name: 'মাধ্যম', 
+          duration: 75, 
+          spawnInterval: 700, 
+          maxFish: 7, 
+          speedMultiplier: 1.5,  // Slower speed
+          speedLabel: 'স্বাভাবিক'
+        },
+        {
+          id: 3, 
+          name: 'কঠিন', 
+          duration: 60, 
+          spawnInterval: 600, 
+          maxFish: 8, 
+          speedMultiplier: 2.2,  // Normal speed
+          speedLabel: 'দ্রুত'
+        },
+        {
+          id: 4, 
+          name: 'অতি কঠিন', 
+          duration: 45, 
+          spawnInterval: 500, 
+          maxFish: 9, 
+          speedMultiplier: 3.0,  // Faster
+          speedLabel: 'অতি দ্রুত'
+        },
+        {
+          id: 5, 
+          name: 'বিশেষজ্ঞ', 
+          duration: 30, 
+          spawnInterval: 400, 
+          maxFish: 10, 
+          speedMultiplier: 4.1,  // Much faster
+          speedLabel: 'বজ্রগতি'
+        }
+      ],
+      fishTypes: [
+        {
+          name: 'rohu', 
+          display: 'রুই',  // Changed from রহু to রুই
+          points: 10, 
+          baseSpeed: 1.0, 
+          rarity: 0.28,
+          color: '#ff6b6b'
+        },
+        {
+          name: 'tilapia', 
+          display: 'তেলাপিয়া', 
+          points: 6, 
+          baseSpeed: 1.2, 
+          rarity: 0.32,
+          color: '#3742fa'
+        },
+        {
+          name: 'catfish', 
+          display: 'কাতলা', 
+          points: 14, 
+          baseSpeed: 0.8, 
+          rarity: 0.16,
+          color: '#2ed573'
+        },
+        {
+          name: 'koi', 
+          display: 'কই', 
+          points: 4, 
+          baseSpeed: 1.4, 
+          rarity: 0.18,
+          color: '#ffa502'
+        },
+        {
+          name: 'ilish', 
+          display: 'ইলিশ', 
+          points: 40, 
+          baseSpeed: 1.0, 
+          rarity: 0.06,
+          color: '#ffd700'
+        }
+      ]
+    };
+
+    // Game state variables
+    let gameState = {
+      score: 0,
+      timer: 60,
+      currentLevel: 1,
+      selectedLevel: 1,
+      selectedSpeed: 1.0, // Global speed multiplier
+      running: false,
+      paused: false,
+      spawnTimer: null,
+      gameTimer: null,
+      fishCounter: 0,
+      caughtFish: {} // Track caught fish for score breakdown
+    };
+
+    // DOM element references
+    const elements = {
+      pond: document.getElementById('pond'),
+      score: document.getElementById('score'),
+      timer: document.getElementById('timer'),
+      level: document.getElementById('level'),
+      levelIndicator: document.getElementById('levelIndicator'),
+      speedIndicator: document.getElementById('speedIndicator'),
+      startBtn: document.getElementById('startBtn'),
+      pauseBtn: document.getElementById('pauseBtn'),
+      resetBtn: document.getElementById('resetBtn'),
+      levelSelectBtn: document.getElementById('levelSelectBtn'),
+      speedSelectBtn: document.getElementById('speedSelectBtn'),
+      levelModal: document.getElementById('levelModal'),
+      levelButtons: document.getElementById('levelButtons'),
+      cancelLevel: document.getElementById('cancelLevel'),
+      confirmLevel: document.getElementById('confirmLevel'),
+      pauseOverlay: document.getElementById('pauseOverlay'),
+      speedModal: document.getElementById('speedModal'),
+      speedButtons: document.getElementById('speedButtons'),
+      cancelSpeed: document.getElementById('cancelSpeed'),
+      confirmSpeed: document.getElementById('confirmSpeed'),
+      scoreModal: document.getElementById('scoreModal'),
+      scoreBreakdown: document.getElementById('scoreBreakdown'),
+      closeScoreModal: document.getElementById('closeScoreModal')
+    };
+
+    /*
+     * Level Selection System
+     * Allows players to choose difficulty before starting
+     */
+    function initializeLevelSelection() {
+      // Generate level selection buttons
+      CONFIG.levels.forEach(level => {
+        const button = document.createElement('button');
+        button.className = 'deer';
+        button.dataset.level = level.id;
+        button.innerHTML = `
+          <div style="font-size: 16px; margin-bottom: 4px;">লেভেল ${level.id}</div>
+          <div style="font-size: 12px; opacity: 0.9;">${level.name}</div>
+          <div style="font-size: 10px; opacity: 0.7;">${level.duration}সে</div>
+        `;
+        elements.levelButtons.appendChild(button);
+
+        // Add click event for level selection
+        button.addEventListener('click', () => {
+          // Remove previous selection
+          elements.levelButtons.querySelectorAll('.deer').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          // Select current level
+          button.classList.add('selected');
+          gameState.selectedLevel = level.id;
+        });
+      });
+
+      // Set default selection (Level 1)
+      elements.levelButtons.querySelector('[data-level="1"]').classList.add('selected');
+    }
+
+    /*
+     * Speed Selection System
+     * Allows players to choose global fish speed
+     */
+    function initializeSpeedSelection() {
+      const speedOptions = [
+        { label: 'ধীর', multiplier: 0.7 },
+        { label: 'স্বাভাবিক', multiplier: 1.0 },
+        { label: 'দ্রুত', multiplier: 1.3 },
+        { label: 'অতি দ্রুত', multiplier: 1.6 }
+      ];
+
+      speedOptions.forEach(speed => {
+        const button = document.createElement('button');
+        button.className = 'deer';
+        button.dataset.multiplier = speed.multiplier;
+        button.textContent = speed.label;
+        elements.speedButtons.appendChild(button);
+
+        button.addEventListener('click', () => {
+          elements.speedButtons.querySelectorAll('.deer').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          button.classList.add('selected');
+          gameState.selectedSpeed = speed.multiplier;
+        });
+      });
+
+      // Set default selection (Normal speed)
+      elements.speedButtons.querySelector('[data-multiplier="1"]').classList.add('selected');
+    }
+
+    /*
+     * Score Breakdown System
+     * Shows detailed breakdown of points earned from each fish type
+     */
+    function showScoreBreakdown() {
+      elements.scoreBreakdown.innerHTML = '';
+      
+      if (Object.keys(gameState.caughtFish).length === 0) {
+        elements.scoreBreakdown.innerHTML = '<div style="text-align: center; opacity: 0.7;">এখনো কোনো মাছ ধরা হয়নি</div>';
+      } else {
+        let totalPoints = 0;
+        CONFIG.fishTypes.forEach(fishType => {
+          const count = gameState.caughtFish[fishType.name] || 0;
+          if (count > 0) {
+            const points = count * fishType.points;
+            totalPoints += points;
+            
+            const fishScoreDiv = document.createElement('div');
+            fishScoreDiv.className = 'fishScore';
+            fishScoreDiv.innerHTML = `
+              <div class="fishName">${fishType.display} (${count}টি)</div>
+              <div class="fishPoints">+${points}</div>
+            `;
+            elements.scoreBreakdown.appendChild(fishScoreDiv);
+          }
+        });
+        
+        // Add total
+        const totalDiv = document.createElement('div');
+        totalDiv.className = 'fishScore';
+        totalDiv.style.borderTop = '2px solid rgba(255,255,255,0.2)';
+        totalDiv.style.marginTop = '10px';
+        totalDiv.style.fontWeight = '700';
+        totalDiv.innerHTML = `
+          <div class="fishName">মোট স্কোর</div>
+          <div class="fishPoints" style="color: #ffd54a; font-size: 16px;">${totalPoints}</div>
+        `;
+        elements.scoreBreakdown.appendChild(totalDiv);
+      }
+      
+      elements.scoreModal.style.display = 'flex';
+      elements.scoreModal.style.opacity = '0';
+      setTimeout(() => {
+        elements.scoreModal.style.opacity = '1';
+        elements.scoreModal.style.transition = 'opacity 0.3s ease';
+      }, 10);
+    }
+
+    function hideScoreBreakdown() {
+      elements.scoreModal.style.opacity = '0';
+      setTimeout(() => {
+        elements.scoreModal.style.display = 'none';
+      }, 300);
+    }
+
+    /*
+     * Modal Control Functions
+     * Handle opening and closing of level and speed selection modals
+     */
+    function showLevelModal() {
+      elements.levelModal.style.display = 'flex';
+      elements.levelModal.style.opacity = '0';
+      setTimeout(() => {
+        elements.levelModal.style.opacity = '1';
+        elements.levelModal.style.transition = 'opacity 0.3s ease';
+      }, 10);
+    }
+
+    function hideLevelModal() {
+      elements.levelModal.style.opacity = '0';
+      setTimeout(() => {
+        elements.levelModal.style.display = 'none';
+      }, 300);
+    }
+
+    function showSpeedModal() {
+      elements.speedModal.style.display = 'flex';
+      elements.speedModal.style.opacity = '0';
+      setTimeout(() => {
+        elements.speedModal.style.opacity = '1';
+        elements.speedModal.style.transition = 'opacity 0.3s ease';
+      }, 10);
+    }
+
+    function hideSpeedModal() {
+      elements.speedModal.style.opacity = '0';
+      setTimeout(() => {
+        elements.speedModal.style.display = 'none';
+      }, 300);
+    }
+
+    /*
+     * Fish Management System with Proper Clickability
+     * Handles fish spawning, movement, and interaction using simple colored circles for better performance
+     */
+    function pickFishType() {
+      const random = Math.random();
+      let accumulator = 0;
+      for(const fishType of CONFIG.fishTypes) {
+        accumulator += fishType.rarity;
+        if(random <= accumulator) return fishType;
+      }
+      return CONFIG.fishTypes[0]; // fallback
+    }
+
+    function createFish() {
+      const currentLevelConfig = CONFIG.levels[gameState.currentLevel - 1];
+      const fishCount = elements.pond.querySelectorAll('.swimming').length;
+      
+      if(fishCount >= currentLevelConfig.maxFish) return;
+
+      const fishType = pickFishType();
+      gameState.fishCounter++;
+      const fishId = `${fishType.name}-${gameState.fishCounter}`;
+
+      // Create fish element with proper clickability
+      const fishElement = document.createElement('div');
+      fishElement.className = `swimming ${fishType.name}`;
+      fishElement.id = fishId;
+      fishElement.dataset.points = fishType.points;
+      fishElement.dataset.name = fishType.display;
+      fishElement.dataset.fishType = fishType.name;
+
+      // Set initial position and movement direction
+      const side = Math.random() < 0.5 ? 'left' : 'right';
+      const topPosition = 20 + Math.random() * (elements.pond.clientHeight - 100);
+      fishElement.style.top = `${topPosition}px`;
+
+      const startX = side === 'left' ? -150 : elements.pond.clientWidth + 150;
+      fishElement.style.left = `${startX}px`;
+
+      // Create simple fish using colored shapes for better clickability
+      fishElement.innerHTML = `
+        <div style="
+          width: 100%; 
+          height: 100%; 
+          background: linear-gradient(45deg, ${fishType.color}, ${fishType.color}dd);
+          border-radius: 50% 10% 50% 10%;
+          border: 2px solid ${fishType.color}aa;
+          position: relative;
+          cursor: pointer;
+          ${side === 'right' ? 'transform: scaleX(-1);' : ''}
+        ">
+          <div style="
+            position: absolute;
+            top: 25%;
+            left: 20%;
+            width: 8px;
+            height: 8px;
+            background: #000;
+            border-radius: 50%;
+          "></div>
+          <div style="
+            position: absolute;
+            top: 22%;
+            left: 18%;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+          "></div>
+          <div style="
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+          ">${fishType.display}</div>
+        </div>
+      `;
+
+      elements.pond.appendChild(fishElement);
+
+      // Animate fish movement across pond with level-based speed
+      animateFishMovement(fishElement, fishType, side, topPosition, currentLevelConfig);
+
+      // Add click/tap handler for catching fish with proper event handling
+      fishElement.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if(!gameState.paused && gameState.running && !fishElement.dataset.caught) {
+          catchFish(fishElement, fishType);
+        }
+      });
+
+      // Also add touch event for mobile
+      fishElement.addEventListener('touchstart', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if(!gameState.paused && gameState.running && !fishElement.dataset.caught) {
+          catchFish(fishElement, fishType);
+        }
+      }, {passive: false});
+
+      // Auto-remove fish after timeout
+      const movementDuration = calculateMovementDuration(fishType, currentLevelConfig);
+      setTimeout(() => {
+        if(elements.pond.contains(fishElement) && !fishElement.dataset.caught) {
+          fishElement.remove();
+        }
+      }, movementDuration + 2000);
+    }
+
+    /*
+     * Fish Animation System with Level-Based Speed Control
+     * Handles smooth movement with speed variations based on level and global speed setting
+     */
+    function animateFishMovement(fishElement, fishType, side, topPosition, levelConfig) {
+      const pondWidth = elements.pond.clientWidth;
+      
+      // Calculate speed based on fish type, level multiplier, and global speed multiplier
+      const baseSpeed = 8000; // Base movement duration in ms
+      const levelSpeedMultiplier = levelConfig.speedMultiplier;
+      const globalSpeedMultiplier = gameState.selectedSpeed;
+      const fishSpeedMultiplier = fishType.baseSpeed;
+      
+      // Calculate final duration (lower = faster)
+      const duration = baseSpeed / (levelSpeedMultiplier * globalSpeedMultiplier * fishSpeedMultiplier);
+      
+      const fromX = side === 'left' ? -150 : pondWidth + 150;
+      const toX = side === 'left' ? pondWidth + 150 : -150;
+      const startTime = performance.now();
+
+      function animationStep(currentTime) {
+        if(gameState.paused || fishElement.dataset.caught) {
+          if(!fishElement.dataset.caught) {
+            requestAnimationFrame(animationStep);
+          }
+          return;
+        }
+
+        const progress = Math.min(1, (currentTime - startTime) / duration);
+        const currentX = fromX + (toX - fromX) * progress;
+        fishElement.style.left = currentX + 'px';
+
+        // Add subtle vertical bobbing motion
+        const bobbing = Math.sin((currentTime / 400) + gameState.fishCounter) * 8;
+        fishElement.style.top = `${topPosition + bobbing}px`;
+
+        if(progress < 1 && elements.pond.contains(fishElement) && !fishElement.dataset.caught) {
+          requestAnimationFrame(animationStep);
+        } else if(elements.pond.contains(fishElement) && !fishElement.dataset.caught) {
+          fishElement.remove();
+        }
+      }
+      requestAnimationFrame(animationStep);
+    }
+
+    function calculateMovementDuration(fishType, levelConfig) {
+      const baseSpeed = 8000;
+      return (baseSpeed / (levelConfig.speedMultiplier * gameState.selectedSpeed * fishType.baseSpeed)) + 1000;
+    }
+
+    /*
+     * Fish Catching System
+     * Handles player interaction and scoring with proper feedback
+     */
+    function catchFish(fishElement, fishType) {
+      // Prevent double-catching
+      if(fishElement.dataset.caught) return;
+      fishElement.dataset.caught = '1';
+
+      // Create splash effect at fish location
+      const fishRect = fishElement.getBoundingClientRect();
+      const pondRect = elements.pond.getBoundingClientRect();
+      const splashX = fishRect.left + fishRect.width/2 - pondRect.left;
+      const splashY = fishRect.top + fishRect.height/2 - pondRect.top;
+      createSplashEffect(splashX, splashY);
+
+      // Calculate and add points
+      const points = parseInt(fishElement.dataset.points || fishType.points || 5, 10);
+      gameState.score += points;
+      elements.score.textContent = gameState.score;
+
+      // Track caught fish for score breakdown
+      if (!gameState.caughtFish[fishType.name]) {
+        gameState.caughtFish[fishType.name] = 0;
+      }
+      gameState.caughtFish[fishType.name]++;
+
+      // Animate fish being caught
+      fishElement.classList.add('caught');
+      setTimeout(() => {
+        if(elements.pond.contains(fishElement)) {
+          fishElement.remove();
+        }
+      }, 320);
+
+      // Show floating score indicator
+      showFloatingScore(splashX, splashY, points, fishType.display);
+
+      // Special bonus for catching Ilish (rare fish)
+      if(fishType.name === 'ilish') {
+        gameState.timer = Math.min(gameState.timer + 8, CONFIG.levels[gameState.currentLevel - 1].duration + 30);
+        updateTimerDisplay();
+        showBonusMessage('🐟 ইলিশ বোনাস! +৮ সেকেন্ড');
+      }
+    }
+
+    /*
+     * Visual Effects System
+     * Handles splash effects and floating score indicators
+     */
+    function createSplashEffect(x, y) {
+      const splash = document.createElement('div');
+      splash.className = 'splash';
+      splash.style.left = x + 'px';
+      splash.style.top = y + 'px';
+      splash.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(135,206,235,0.3))';
+      elements.pond.appendChild(splash);
+      
+      setTimeout(() => {
+        if(elements.pond.contains(splash)) {
+          splash.remove();
+        }
+      }, 800);
+    }
+
+    function showFloatingScore(x, y, points, fishName) {
+      const scoreElement = document.createElement('div');
+      scoreElement.style.position = 'absolute';
+      scoreElement.style.left = x + 'px';
+      scoreElement.style.top = y + 'px';
+      scoreElement.style.transform = 'translate(-50%, -50%)';
+      scoreElement.style.fontSize = '14px';
+      scoreElement.style.fontWeight = '700';
+      scoreElement.style.color = '#fff';
+      scoreElement.style.textShadow = '0 2px 8px rgba(0,0,0,0.8)';
+      scoreElement.style.pointerEvents = 'none';
+      scoreElement.style.zIndex = '1000';
+      scoreElement.textContent = `+${points} ${fishName}`;
+      
+      elements.pond.appendChild(scoreElement);
+      
+      // Animate floating score
+      scoreElement.animate([
+        {opacity: 1, transform: 'translate(-50%, -50%)'},
+        {opacity: 0, transform: 'translate(-50%, -120%)'}
+      ], {
+        duration: 1200,
+        easing: 'ease-out'
+      });
+      
+      setTimeout(() => {
+        if(elements.pond.contains(scoreElement)) {
+          scoreElement.remove();
+        }
+      }, 1200);
+    }
+
+    function showBonusMessage(message) {
+      const bonusElement = document.createElement('div');
+      bonusElement.style.position = 'absolute';
+      bonusElement.style.top = '50%';
+      bonusElement.style.left = '50%';
+      bonusElement.style.transform = 'translate(-50%, -50%)';
+      bonusElement.style.fontSize = '18px';
+      bonusElement.style.fontWeight = '700';
+      bonusElement.style.color = '#ffd54a';
+      bonusElement.style.textShadow = '0 2px 8px rgba(0,0,0,0.8)';
+      bonusElement.style.pointerEvents = 'none';
+      bonusElement.style.zIndex = '1001';
+      bonusElement.style.background = 'rgba(0,0,0,0.7)';
+      bonusElement.style.padding = '12px 20px';
+      bonusElement.style.borderRadius = '12px';
+      bonusElement.style.backdropFilter = 'blur(10px)';
+      bonusElement.textContent = message;
+      
+      elements.pond.appendChild(bonusElement);
+      
+      setTimeout(() => {
+        if(elements.pond.contains(bonusElement)) {
+          bonusElement.remove();
+        }
+      }, 2000);
+    }
+
+    /*
+     * Game Control System
+     * Handles game state management, timers, and UI updates
+     */
+    function startGame() {
+      if(gameState.running) return;
+
+      // Apply selected level configuration
+      gameState.currentLevel = gameState.selectedLevel;
+      const levelConfig = CONFIG.levels[gameState.currentLevel - 1];
+      gameState.timer = levelConfig.duration;
+      gameState.running = true;
+      gameState.paused = false;
+
+      // Update UI
+      elements.level.textContent = gameState.currentLevel;
+      elements.levelIndicator.textContent = `লেভেল ${gameState.currentLevel}`;
+      elements.speedIndicator.textContent = `গতি: ${getSpeedLabel()}`;
+      elements.startBtn.style.display = 'none';
+      elements.pauseBtn.style.display = 'inline-block';
+      elements.pauseBtn.textContent = 'বিরতি';
+      elements.levelSelectBtn.disabled = true;
+      elements.speedSelectBtn.disabled = true;
+
+      // Start game timers
+      startGameTimer();
+      startFishSpawning();
+
+      // Spawn initial fish immediately for better user experience
+      setTimeout(() => createFish(), 200);
+      setTimeout(() => createFish(), 600);
+      setTimeout(() => createFish(), 1000);
+    }
+
+    function pauseGame() {
+      if(!gameState.running) return;
+
+      gameState.paused = !gameState.paused;
+      
+      if(gameState.paused) {
+        elements.pauseBtn.textContent = 'চালু করো';
+        elements.pauseOverlay.style.display = 'flex';
+      } else {
+        elements.pauseBtn.textContent = 'বিরতি';
+        elements.pauseOverlay.style.display = 'none';
+      }
+    }
+
+    function resetGame() {
+      // Clear all timers
+      if(gameState.spawnTimer) clearInterval(gameState.spawnTimer);
+      if(gameState.gameTimer) clearInterval(gameState.gameTimer);
+
+      // Reset game state
+      gameState.score = 0;
+      gameState.timer = CONFIG.levels[gameState.selectedLevel - 1].duration;
+      gameState.running = false;
+      gameState.paused = false;
+      gameState.fishCounter = 0;
+      gameState.caughtFish = {}; // Reset caught fish tracking
+
+      // Clear all fish from pond
+      elements.pond.querySelectorAll('.swimming').forEach(fish => fish.remove());
+
+      // Reset UI
+      elements.score.textContent = '0';
+      updateTimerDisplay();
+      elements.startBtn.style.display = 'inline-block';
+      elements.pauseBtn.style.display = 'none';
+      elements.pauseOverlay.style.display = 'none';
+      elements.levelSelectBtn.disabled = false;
+      elements.speedSelectBtn.disabled = false;
+    }
+
+    function startGameTimer() {
+      gameState.gameTimer = setInterval(() => {
+        if(gameState.paused) return;
+
+        gameState.timer--;
+        updateTimerDisplay();
+
+        if(gameState.timer <= 0) {
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function startFishSpawning() {
+      const levelConfig = CONFIG.levels[gameState.currentLevel - 1];
+      gameState.spawnTimer = setInterval(() => {
+        if(!gameState.paused && gameState.running) {
+          createFish();
+        }
+      }, levelConfig.spawnInterval);
+    }
+
+    function endGame() {
+      // Clear timers
+      if(gameState.spawnTimer) clearInterval(gameState.spawnTimer);
+      if(gameState.gameTimer) clearInterval(gameState.gameTimer);
+
+      gameState.running = false;
+      gameState.paused = false;
+
+      // Show game over message
+      showGameOverMessage();
+
+      // Reset UI
+      elements.startBtn.style.display = 'inline-block';
+      elements.pauseBtn.style.display = 'none';
+      elements.pauseOverlay.style.display = 'none';
+      elements.levelSelectBtn.disabled = false;
+      elements.speedSelectBtn.disabled = false;
+    }
+
+    function showGameOverMessage() {
+      const gameOverElement = document.createElement('div');
+      gameOverElement.style.position = 'absolute';
+      gameOverElement.style.top = '50%';
+      gameOverElement.style.left = '50%';
+      gameOverElement.style.transform = 'translate(-50%, -50%)';
+      gameOverElement.style.fontSize = '24px';
+      gameOverElement.style.fontWeight = '700';
+      gameOverElement.style.color = '#fff';
+      gameOverElement.style.textAlign = 'center';
+      gameOverElement.style.textShadow = '0 2px 8px rgba(0,0,0,0.8)';
+      gameOverElement.style.pointerEvents = 'none';
+      gameOverElement.style.zIndex = '1001';
+      gameOverElement.style.background = 'rgba(0,0,0,0.8)';
+      gameOverElement.style.padding = '20px 30px';
+      gameOverElement.style.borderRadius = '16px';
+      gameOverElement.style.backdropFilter = 'blur(10px)';
+      gameOverElement.innerHTML = `
+        <div style="margin-bottom: 12px;">🎣 খেলা শেষ!</div>
+        <div style="font-size: 18px; color: #ffd54a;">স্কোর: ${gameState.score}</div>
+        <div style="font-size: 14px; margin-top: 8px; opacity: 0.8;">স্কোরে ক্লিক করে বিবরণ দেখুন</div>
+      `;
+      
+      elements.pond.appendChild(gameOverElement);
+      
+      setTimeout(() => {
+        if(elements.pond.contains(gameOverElement)) {
+          gameOverElement.remove();
+        }
+      }, 4000);
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(gameState.timer / 60);
+      const seconds = gameState.timer % 60;
+      elements.timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function getSpeedLabel() {
+      const speedLabels = {
+        0.7: 'ধীর',
+        1.0: 'স্বাভাবিক',
+        1.3: 'দ্রুত',
+        1.6: 'অতি দ্রুত'
+      };
+      return speedLabels[gameState.selectedSpeed] || 'স্বাভাবিক';
+    }
+
+    /*
+     * Event Listeners Setup
+     * Attach all button click handlers and keyboard shortcuts
+     */
+    function setupEventListeners() {
+      // Main game control buttons
+      elements.startBtn.addEventListener('click', startGame);
+      elements.pauseBtn.addEventListener('click', pauseGame);
+      elements.resetBtn.addEventListener('click', resetGame);
+
+      // Level selection buttons
+      elements.levelSelectBtn.addEventListener('click', showLevelModal);
+      elements.cancelLevel.addEventListener('click', hideLevelModal);
+      elements.confirmLevel.addEventListener('click', () => {
+        hideLevelModal();
+        resetGame(); // Reset to apply new level settings
+      });
+
+      // Speed selection buttons
+      elements.speedSelectBtn.addEventListener('click', showSpeedModal);
+      elements.cancelSpeed.addEventListener('click', hideSpeedModal);
+      elements.confirmSpeed.addEventListener('click', () => {
+        hideSpeedModal();
+        elements.speedIndicator.textContent = `গতি: ${getSpeedLabel()}`;
+      });
+
+      // Score breakdown functionality
+      elements.score.addEventListener('click', showScoreBreakdown);
+      elements.closeScoreModal.addEventListener('click', hideScoreBreakdown);
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (event) => {
+        switch(event.code) {
+          case 'Space':
+            event.preventDefault();
+            if(gameState.running) pauseGame();
+            break;
+          case 'KeyR':
+            event.preventDefault();
+            resetGame();
+            break;
+          case 'Enter':
+            event.preventDefault();
+            if(!gameState.running) startGame();
+            break;
+        }
+      });
+
+      // Close modals when clicking outside
+      elements.levelModal.addEventListener('click', (event) => {
+        if(event.target === elements.levelModal) {
+          hideLevelModal();
+        }
+      });
+
+      elements.speedModal.addEventListener('click', (event) => {
+        if(event.target === elements.speedModal) {
+          hideSpeedModal();
+        }
+      });
+
+      elements.scoreModal.addEventListener('click', (event) => {
+        if(event.target === elements.scoreModal) {
+          hideScoreBreakdown();
+        }
+      });
+    }
+
+    /*
+     * Game Initialization
+     * Initialize all game systems when the page loads
+     */
+    function initializeGame() {
+      // Initialize level and speed selection systems
+      initializeLevelSelection();
+      initializeSpeedSelection();
+
+      // Set up all event listeners
+      setupEventListeners();
+
+      // Initialize UI
+      updateTimerDisplay();
+      elements.speedIndicator.textContent = `গতি: ${getSpeedLabel()}`;
+
+      console.log('🎣 Enhanced Fishing Game with Corrected Fish Names and Speed Initialized Successfully!');
+    }
+
+    // Start the game when the page is fully loaded
+    document.addEventListener('DOMContentLoaded', initializeGame);
+  </script>
+</body>
+</html>
+
