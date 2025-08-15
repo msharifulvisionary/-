@@ -270,8 +270,9 @@
 
     /* Play area */
     .pond{
-      height:60vh;
-      min-height:320px;
+      height:50vh;
+      max-height:400px;
+      min-height:250px;
       border-radius:12px;
       background:linear-gradient(180deg, rgba(0,80,150,0.18), rgba(0,35,85,0.35));
       position:relative;
@@ -303,9 +304,9 @@
     }
 
     /* Fish species styles with adjusted sizes */
-    .rohu{width:75px;height:45px;}
+    .rohu{width:80px;height:49px;}
     .tilapia{width:70px;height:42px;}
-    .catfish{width:85px;height:60px;}
+    .catfish{width:90px;height:55px;}
     .koi{width:64px;height:39px;}
     .ilish{width:96px;height:57px;filter:drop-shadow(0 6px 12px rgba(255,215,90,0.12))}
 
@@ -497,7 +498,7 @@
       body{padding:24px}
       .elephant{margin-bottom:18px}
       .lion h1{font-size:20px}
-      .pond{height:64vh}
+      .pond{height:55vh; max-height:500px;}
       .cat{flex-wrap: nowrap}
       .dog{flex-wrap: nowrap}
       .snake{flex-wrap: nowrap}
@@ -505,6 +506,17 @@
 
     /* Responsive adjustments */
     @media(max-width: 480px){
+      body{
+        padding: 8px;
+      }
+      
+      .pond{
+        height: 45vh;
+        max-height: 350px;
+        min-height: 220px;
+        margin: 4px;
+      }
+      
       .wolf{
         padding: 16px;
       }
@@ -526,6 +538,15 @@
       
       .dog, .snake{
         justify-content: center;
+      }
+      
+      .horse{
+        padding: 8px;
+      }
+      
+      .footer{
+        margin-top: 12px;
+        padding: 16px;
       }
     }
   </style>
@@ -650,7 +671,7 @@
           duration: 90, 
           spawnInterval: 600, // Faster spawn for more action
           maxFish: 6, 
-          speedMultiplier: 2.1,  // Much faster speed for Level 1
+          speedMultiplier: 2.5,  // Much faster speed for Level 1
           speedLabel: 'দ্রুত'
         },
         {
@@ -659,7 +680,7 @@
           duration: 75, 
           spawnInterval: 700, 
           maxFish: 7, 
-          speedMultiplier: 1.5,  // Slower speed
+          speedMultiplier: 4.0,  // Slower speed
           speedLabel: 'স্বাভাবিক'
         },
         {
@@ -668,7 +689,7 @@
           duration: 60, 
           spawnInterval: 600, 
           maxFish: 8, 
-          speedMultiplier: 2.2,  // Normal speed
+          speedMultiplier: 7.0,  // Normal speed
           speedLabel: 'দ্রুত'
         },
         {
@@ -677,7 +698,7 @@
           duration: 45, 
           spawnInterval: 500, 
           maxFish: 9, 
-          speedMultiplier: 3.0,  // Faster
+          speedMultiplier: 9.0,  // Faster
           speedLabel: 'অতি দ্রুত'
         },
         {
@@ -686,7 +707,7 @@
           duration: 30, 
           spawnInterval: 400, 
           maxFish: 10, 
-          speedMultiplier: 4.1,  // Much faster
+          speedMultiplier: 10.0,  // Much faster
           speedLabel: 'বজ্রগতি'
         }
       ],
