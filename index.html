@@ -869,9 +869,42 @@
     function showScoreBreakdown() {
       elements.scoreBreakdown.innerHTML = '';
       
+      const gameInfoDiv = document.createElement('div');
+      gameInfoDiv.style.marginBottom = '16px';
+      gameInfoDiv.style.padding = '12px';
+      gameInfoDiv.style.background = 'rgba(255,255,255,0.08)';
+      gameInfoDiv.style.borderRadius = '8px';
+      gameInfoDiv.style.border = '1px solid rgba(255,255,255,0.1)';
+      
+      const levelConfig = CONFIG.levels[gameState.currentLevel - 1];
+      gameInfoDiv.innerHTML = `
+        <div style="text-align: center; margin-bottom: 8px; font-weight: 600; color: #ffd54a;">🎮 গেমের তথ্য</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>লেভেল:</span>
+          <span style="font-weight: 600; color: #4caf50;">লেভেল ${gameState.currentLevel} (${levelConfig.name})</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>গতি:</span>
+          <span style="font-weight: 600; color: #2196f3;">${getSpeedLabel()}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span>সময়কাল:</span>
+          <span style="font-weight: 600; color: #ff9800;">${levelConfig.duration} সেকেন্ড</span>
+        </div>
+      `;
+      elements.scoreBreakdown.appendChild(gameInfoDiv);
+      
       if (Object.keys(gameState.caughtFish).length === 0) {
-        elements.scoreBreakdown.innerHTML = '<div style="text-align: center; opacity: 0.7;">এখনো কোনো মাছ ধরা হয়নি</div>';
+        elements.scoreBreakdown.innerHTML += '<div style="text-align: center; opacity: 0.7; margin-top: 16px;">এখনো কোনো মাছ ধরা হয়নি</div>';
       } else {
+        const fishTitleDiv = document.createElement('div');
+        fishTitleDiv.style.textAlign = 'center';
+        fishTitleDiv.style.marginBottom = '12px';
+        fishTitleDiv.style.fontWeight = '600';
+        fishTitleDiv.style.color = '#ffd54a';
+        fishTitleDiv.innerHTML = '🐟 ধরা মাছের বিবরণ';
+        elements.scoreBreakdown.appendChild(fishTitleDiv);
+        
         let totalPoints = 0;
         CONFIG.fishTypes.forEach(fishType => {
           const count = gameState.caughtFish[fishType.name] || 0;
@@ -1376,10 +1409,14 @@
       gameOverElement.style.padding = '20px 30px';
       gameOverElement.style.borderRadius = '16px';
       gameOverElement.style.backdropFilter = 'blur(10px)';
+      
+      const levelConfig = CONFIG.levels[gameState.currentLevel - 1];
       gameOverElement.innerHTML = `
         <div style="margin-bottom: 12px;">🎣 খেলা শেষ!</div>
-        <div style="font-size: 18px; color: #ffd54a;">স্কোর: ${gameState.score}</div>
-        <div style="font-size: 14px; margin-top: 8px; opacity: 0.8;">স্কোরে ক্লিক করে বিবরণ দেখুন</div>
+        <div style="font-size: 18px; color: #ffd54a; margin-bottom: 8px;">স্কোর: ${gameState.score}</div>
+        <div style="font-size: 14px; margin-bottom: 4px; opacity: 0.9;">লেভেল ${gameState.currentLevel} (${levelConfig.name})</div>
+        <div style="font-size: 14px; margin-bottom: 8px; opacity: 0.9;">গতি: ${getSpeedLabel()}</div>
+        <div style="font-size: 12px; margin-top: 8px; opacity: 0.8;">স্কোরে ক্লিক করে বিস্তারিত দেখুন</div>
       `;
       
       elements.pond.appendChild(gameOverElement);
@@ -1388,7 +1425,7 @@
         if(elements.pond.contains(gameOverElement)) {
           gameOverElement.remove();
         }
-      }, 4000);
+      }, 5000); // Increased display time to 5 seconds for more info
     }
 
     function updateTimerDisplay() {
@@ -1499,4 +1536,3 @@
   </script>
 </body>
 </html>
-
